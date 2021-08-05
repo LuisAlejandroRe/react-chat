@@ -1,0 +1,14 @@
+.createchat__search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.createchat__searchContainer {
+  width: 80%;
+  margin: auto;
+  background-color: white;
+}
