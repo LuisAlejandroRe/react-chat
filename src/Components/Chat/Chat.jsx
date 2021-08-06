@@ -2,65 +2,79 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStateValue } from '../../StateProvider';
 import { Link, useParams } from 'react-router-dom';
 import './Chat.css';
-import { Avatar, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import GroupIcon from '@material-ui/icons/Group';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import SearchIcon from '@material-ui/icons/Search';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-import MicIcon from '@material-ui/icons/Mic';
+import SendIcon from '@material-ui/icons/Send';
 import axios from '../../axios';
 import { io } from 'socket.io-client';
 
 function Chat() {
   const [{ user }] = useStateValue();
   const objectUser = JSON.parse(user);
-  const [chat, setChat] = useState();
+  const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socket = useRef();
   const params = useParams();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8000");
-    socket.current?.on('getMessage', (msg) => {
-      if(msg.chatId === params.id) {
-        setMessages((prev) => [...prev, msg])
+    if(params.id) {
+      let mounted = true;
+      socket.current = io("ws://localhost:8000");
+      socket.current?.on('getMessage', (msg) => {
+        if(msg.chatId === params.id) {
+          mounted && setMessages((prev) => [...prev, msg])
+        }
+      })
+  
+      return () => {
+        socket.current.close();
+        mounted = false;
       }
-    })
-
-    return () => {
-      socket.current.close();
     }
-
   }, [params]);
 
   useEffect(() => {
-    axios.get(`/chat/name/${params.id}`, {
-      headers: {
-        authorization: `Bearer ${objectUser.token}`
-      },
-    })
-    .then((res) => {
-      setChat(res.data);
-    })
-    .catch(error => alert(error.message));
-  }, [params, objectUser]);
+    if(params.id) {
+      let mounted = true;
+      axios.get(`/chat/name/${params.id}`, {
+        headers: {
+          authorization: `Bearer ${objectUser.token}`
+        },
+      })
+      .then((res) => {
+        mounted && setChat(res.data);
+      })
+      .catch(error => alert(error.message));
+
+      return () => {
+        mounted = false;
+        setChat(null);
+      }
+    }
+
+  }, [params, user]);
 
   useEffect(() => {
+    if(params.id) {
+      let mounted = true;
+      axios.get(`/messages/sync/${params.id}`, {
+        headers: {
+          authorization: `Bearer ${objectUser.token}`
+        },
+      })
+      .then((res) => {
+        mounted && setMessages(res.data);
+      })
+      .catch(error => alert(error.message));
 
-    console.log('Ejecutando peticion get')
-
-    axios.get(`/messages/sync/${params.id}`, {
-      headers: {
-        authorization: `Bearer ${objectUser.token}`
-      },
-    })
-    .then((res) => {
-      setMessages(res.data);
-    })
-    .catch(error => alert(error.message));
-  }, []);
+      return () => {
+        mounted = false;
+        setMessages([]);
+      }
+    }
+  }, [params, user]);
 
   const divRef = useRef(null);
   useEffect(() => {
@@ -70,7 +84,9 @@ function Chat() {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    if(input.length > 0) {
+    const newInput = input.trim();
+
+    if(newInput.length > 0) {
 
       socket.current?.emit('sendMessage', {
         senderId: {
@@ -78,13 +94,13 @@ function Chat() {
           username: objectUser.username,
         },
         chatId: params.id,
-        message: input,
+        message: newInput,
         timestamp: new Date().toString(),
       })
 
       axios.post('/messages/new', {
         chatId: params.id,
-        message: input,
+        message: newInput,
         timestamp: new Date().toString(),
       },{
         headers: {
@@ -98,6 +114,12 @@ function Chat() {
     }  
   };
 
+  const onChange = (e) => {
+    if (e.target.value.length >= 0 && e.target.value.length < 2000) {
+      setInput(e.target.value)
+    }
+  }
+
   return(
     <div className="chat">
       <div className="chat__header">
@@ -106,58 +128,45 @@ function Chat() {
           <IconButton>
             <ArrowBackIosIcon />
           </IconButton>
-        </Link>
-        
-
-        <Avatar />
+        </Link>  
 
         <div className="chat__headerInfo">
+          <GroupIcon />
           {chat &&
             chat.accessList.map((name) => {
               if(name._id !== objectUser.id) return (<h3>{name.username}</h3>)
             })
           }
-          <p>Last seen at...</p>
+
         </div>
 
-        <div className="chat__headerRight">
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <IconButton>
-            <AttachFileIcon />
-          </IconButton>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
-        </div>
       </div>
 
       <div className="chat__body">
         {messages &&
           messages.map((message) => (
-            <p className={`chat__reciever ${message.senderId._id === objectUser.id && "chat__message"}`}>         
-            <span className="chat__name">{message.senderId.username}</span>
-            {message.message}
-            <span className="chat__timestamp">{message.timestamp.split("GMT")[0]}</span>
-            </p>
+            <div className={`chat__reciever ${message.senderId._id === objectUser.id && "chat__message"}`}>         
+              <span className="chat__name">{message.senderId.username}</span>
+              <div className={`chat__containerReciever ${message.senderId._id === objectUser.id && "chat__container"}`}>           
+                {message.message}
+                <span className="chat__timestamp">{message.timestamp.split("GMT")[0]}</span>
+              </div>
+            </div>
           ))
         }
         <div ref={divRef}></div>
       </div>
 
       <div className="chat__footer">
-        <InsertEmoticonIcon />
         <form>
           <input 
             value={input} 
-            onChange={e => setInput(e.target.value)} 
+            onChange={onChange} 
             type="text" 
             placeholder="Type a message"
           />
-          <button onClick={sendMessage} type="submit">Send a message</button>
+          <IconButton onClick={sendMessage} type="submit" color='inherit'><SendIcon /></IconButton>
         </form>
-        <MicIcon />
       </div>
     </div>
   )

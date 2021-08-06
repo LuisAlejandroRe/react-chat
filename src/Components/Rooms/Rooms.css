@@ -1,18 +1,166 @@
 .rooms {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rooms__container {
+  width: 90%;
+  height: 95vh;
+  display: flex;
+  color: #fff;
+  border-radius: 13% 4% 11% 4% / 7% 12% 5% 17%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 0px 60px 5px rgba(0, 0, 0, 0.9);
+}
+
+.sidebar {
+  flex: 0.35;
+  border-right: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.sidebar__header {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.sidebar__header .MuiSvgIcon-root {
+  font-size: 35px;
+}
+
+.sidebar__header a,
+.sidebar__createChat button {
+  color: white;
+  text-decoration: none;
+  background: rgb(11, 93, 106);
+  background: linear-gradient(
+    344deg,
+    rgba(11, 93, 106, 1) 0%,
+    rgba(92, 190, 231, 0.7) 100%
+  );
+  font-size: 15px;
+  font-family: "Courgette", cursive;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.sidebar__header a:hover,
+.sidebar__createChat button:hover {
+  background: rgb(11, 93, 106);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+.sidebar__createChat {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.sidebar__createChat button {
+  padding: 10px 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar__chats {
+  width: 100%;
+  padding: 10px 40px;
+  height: calc(100% - 130px);
+  overflow-y: scroll;
+}
+
+.sidebar__chats::-webkit-scrollbar {
+  width: 10px;
+  background-color: none;
+}
+
+.sidebar__chats::-webkit-scrollbar-thumb {
+  background: rgb(11, 93, 106);
+  background: linear-gradient(
+    344deg,
+    rgba(11, 93, 106, 1) 0%,
+    rgba(92, 190, 231, 0.7) 100%
+  );
+  border-radius: 2px;
+}
+
+.sidebar__chatsItem {
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: "Courgette", cursive;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.sidebar__chatsItem:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+.rooms__noChat {
+  flex: 0.65;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  position: relative;
+  align-items: center;
+  justify-content: space-around;
+  background-image: url("../../Media/chat-background.jpg");
+  background-size: 100%;
+  background-repeat: repeat-y;
+  border-radius: 0% 6% 17% 0% / 0% 12% 5% 0%;
 }
 
-.rooms__header {
+.rooms__logoContainer {
+  width: 260px;
+  height: 200px;
+  padding: 30px;
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  border-right: 1px solid lightgray;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 66% 34% 80% 20% / 36% 85% 15% 64%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 0px 60px 5px rgba(0, 0, 0, 0.9);
 }
 
-.rooms__header > .MuiSvgIcon-root {
-  margin-right: 2vw;
-  font-size: 24px !important;
+.rooms__logoContainer .MuiSvgIcon-root {
+  font-size: 50px;
+  margin-right: 20px;
+  animation: bouncer 0.5s cubic-bezier(0.19, 0.57, 0.3, 0.98) infinite alternate;
+}
+
+@keyframes bouncer {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: translateY(-30px);
+  }
+}
+
+.rooms__logoContainer p {
+  font-size: 50px;
+  font-weight: 800;
+}
+
+.rooms__noChat span {
+  font-size: 25px;
 }

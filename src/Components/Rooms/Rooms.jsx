@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useStateValue } from '../../StateProvider';
 import './Rooms.css';
 import CreateChat from '../CreateChat/CreateChat';
-import { Avatar, IconButton } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+import TelegramIcon from '@material-ui/icons/Telegram';
 import axios from '../../axios';
+import Chat from '../Chat/Chat';
 
 function Rooms() {
 
   const [{ user, isCreateChatOpen }, dispatch] = useStateValue();
   const objectUser = JSON.parse(user);
   const [chat, setChat] = useState([]);
+  const params = useParams();
 
   const logOut = () => {
     dispatch({
@@ -38,36 +41,56 @@ function Rooms() {
 
   return(
     <div className="rooms" >
-      <div className="rooms__header">
-        <Avatar/>
-        <h2>{objectUser.username}</h2>
-        <Link to='/' onClick={logOut}>Log out</Link>
-      </div>
+      <div className="rooms__container">
 
-      <div className="rooms__createChat">
-        <button onClick={openModal}>Create chat</button>
-      </div>
+        <div className="sidebar">
 
-      {isCreateChatOpen &&
-        <CreateChat />
-      }
+          <div className="sidebar__header">
+            <PersonIcon />
+            <h2>{objectUser.username}</h2>
+            <Link to='/' onClick={logOut}>Log out</Link>
+          </div>
 
-      <div className="rooms__chats">
-        {chat && 
-          chat.map((i) => {
-            return (
-              <Link to={`/chat/${i._id}`}>
-                <div className="rooms__chatsItem" key={i._id}>
-                  {i.accessList.map((name) => {
-                    if(name._id !== objectUser.id) return (<p>{name.username}</p>)
-                  })}
-                </div>
-              </Link>
-            )
-          })
-        }
+          <div className="sidebar__createChat">
+            <button onClick={openModal}>Create chat</button>
+          </div>
+
+          {isCreateChatOpen &&
+            <CreateChat />
+          }
+
+          <div className="sidebar__chats">
+            {chat && 
+              chat.map((i) => {
+                return (
+                  <Link to={`/chat/${i._id}`}>
+                    <div className="sidebar__chatsItem" key={i._id}>
+                      {i.accessList.map((name) => {
+                        if(name._id !== objectUser.id) return (<p>{name.username}</p>)
+                      })}
+                    </div>
+                  </Link>
+                )
+              })
+            }
+          </div>
+
+        </div>
+
+        {params.id
+        ?
+        <Chat />
+        :
+        <div className="rooms__noChat">
+          <div className="rooms__logoContainer">
+            <TelegramIcon />
+            <p>React<br/>Chat</p>
+          </div>
+          <span>Open a chat or create one</span>
+        </div>
+        }       
+
       </div>
- 
     </div>
   )
 }

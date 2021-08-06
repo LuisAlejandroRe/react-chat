@@ -16,7 +16,7 @@ function App() {
       <Switch>
         <PublicRoute exact path="/" component={Login} />
         <PrivateRoute exact path="/rooms" component={Rooms} />
-        <PrivateRoute exact path="/chat/:id" component={Chat} />
+        <PrivateRoute exact path="/chat/:id" component={Rooms} />
         <Route path="*">
           <Redirect to="/" />
         </Route>

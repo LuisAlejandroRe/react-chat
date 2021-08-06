@@ -80,10 +80,7 @@
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   border: 2px transparent;
-}
-
-.login__container > form > input:focus {
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  outline-width: 0;
 }
 
 .login__signInButton {
