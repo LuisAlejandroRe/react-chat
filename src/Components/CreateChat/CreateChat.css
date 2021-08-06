@@ -1,14 +1,169 @@
-.createchat__search {
-  position: absolute;
+.createchat {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
   top: 0;
   right: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.createchat__searchContainer {
-  width: 80%;
-  margin: auto;
-  background-color: white;
+.createchat__search {
+  width: 858px;
+  height: 60vh;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  border-radius: 16% 5% 10% 10% / 10% 10% 5% 4%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 0px 60px 5px rgba(0, 0, 0, 0.9);
+}
+
+.createchat__search > .MuiSvgIcon-root {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 30px;
+}
+
+.createchat__search form {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createchat__search form input {
+  width: 60%;
+  height: 30px;
+  border-radius: 10px 0 0 10px;
+  padding: 5px 20px;
+  font-size: 15px;
+  font-family: "Georama", sans-serif;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  outline-width: 0;
+}
+
+.createchat__search form button {
+  height: 30px;
+  cursor: pointer;
+  color: white;
+  background: rgb(11, 93, 106);
+  background: linear-gradient(
+    344deg,
+    rgba(11, 93, 106, 1) 0%,
+    rgba(92, 190, 231, 0.7) 100%
+  );
+  font-size: 18px;
+  font-family: "Courgette", cursive;
+  padding: 3px;
+  border-radius: 0 10px 10px 0;
+  border: none;
+}
+
+.createchat__search form button:hover,
+.createchat__searchButtons button:nth-child(2):hover {
+  background: rgb(11, 93, 106);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+.createchat__searchButtons {
+  width: 100%;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.createchat__searchButtons button {
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  background: rgb(11, 93, 106);
+  background: linear-gradient(
+    344deg,
+    rgba(11, 93, 106, 1) 0%,
+    rgba(92, 190, 231, 0.7) 100%
+  );
+  font-size: 15px;
+  font-family: "Courgette", cursive;
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: none;
+}
+
+.createchat__searchButtons button:nth-child(1) {
+  background: rgb(228, 31, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(228, 31, 31, 1) 0%,
+    rgba(138, 94, 24, 1) 100%
+  );
+}
+
+.createchat__searchButtons button:nth-child(1):hover {
+  background: rgba(228, 31, 31, 1);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+.createsearch__lists {
+  width: 100%;
+  height: calc(100% - 140px);
+  display: flex;
+}
+
+.createsearch__lists > div {
+  flex: 0.5;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.createsearch__lists div::-webkit-scrollbar {
+  width: 10px;
+  background-color: none;
+}
+
+.createsearch__lists div::-webkit-scrollbar-thumb {
+  background: rgb(11, 93, 106);
+  background: linear-gradient(
+    344deg,
+    rgba(11, 93, 106, 1) 0%,
+    rgba(92, 190, 231, 0.7) 100%
+  );
+  border-radius: 2px;
+}
+
+.createsearch__lists > div:nth-child(1) {
+  border-right: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.createchat__result {
+  width: 100%;
+  height: 50px;
+  padding: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+}
+
+.createchat__result button .MuiSvgIcon-root {
+  color: rgb(138, 94, 24);
 }

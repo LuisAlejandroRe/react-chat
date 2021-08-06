@@ -10,20 +10,15 @@ import Chat from '../Chat/Chat';
 
 function Rooms() {
 
-  const [{ user, isCreateChatOpen }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   const objectUser = JSON.parse(user);
   const [chat, setChat] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams();
 
   const logOut = () => {
     dispatch({
       type: "LOGOUT",
-    });
-  }
-
-  const openModal = () => {
-    dispatch({
-      type: "OPEN_CREATECHAT",
     });
   }
 
@@ -41,6 +36,9 @@ function Rooms() {
 
   return(
     <div className="rooms" >
+
+      <CreateChat isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      
       <div className="rooms__container">
 
         <div className="sidebar">
@@ -52,12 +50,8 @@ function Rooms() {
           </div>
 
           <div className="sidebar__createChat">
-            <button onClick={openModal}>Create chat</button>
+            <button onClick={() => setIsModalOpen(true)}>Create chat</button>
           </div>
-
-          {isCreateChatOpen &&
-            <CreateChat />
-          }
 
           <div className="sidebar__chats">
             {chat && 

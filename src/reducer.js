@@ -19,18 +19,6 @@ const reducer = (state, action) => {
         user: null,
       };
 
-    case "OPEN_CREATECHAT":
-      return {
-        ...state,
-        isCreateChatOpen: true,
-      };
-
-    case "CLOSE_CREATECHAT":
-      return {
-        ...state,
-        isCreateChatOpen: false,
-      };
-
     default:
       return state;
   }
