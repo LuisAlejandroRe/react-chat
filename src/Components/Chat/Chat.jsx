@@ -22,10 +22,9 @@ function Chat() {
     if(params.id) {
       let mounted = true;
       socket.current = io("ws://localhost:8000");
+      socket.current?.emit('joinRoom', { chatId: params.id });
       socket.current?.on('getMessage', (msg) => {
-        if(msg.chatId === params.id) {
           mounted && setMessages((prev) => [...prev, msg])
-        }
       })
   
       return () => {
@@ -133,7 +132,7 @@ function Chat() {
         <div className="chat__headerInfo">
           <GroupIcon />
           {chat &&
-            chat.accessList.map((name) => {
+            chat.accessList?.map((name) => {
               if(name._id !== objectUser.id) return (<h3>{name.username}</h3>)
             })
           }

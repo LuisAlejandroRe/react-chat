@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState, useEffect, useRef }from 'react';
 import { useHistory } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import PersonIcon from '@material-ui/icons/Person';
@@ -10,7 +10,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import axios from '../../axios';
 
-function CreateChat({isModalOpen, setIsModalOpen}) {
+function CreateChat({isModalOpen, setIsModalOpen, socketRooms}) {
 
   const history = useHistory();
   const [{ user }] = useStateValue();
@@ -18,6 +18,16 @@ function CreateChat({isModalOpen, setIsModalOpen}) {
   const [search, setSearch] = useState('');
   const [result, setResult] = useState([]);
   const [addList, setAddList] = useState([]);
+  //const socket = useRef();
+
+  /*useEffect(() => {
+    socket.current = io("ws://localhost:8000");
+  
+    return () => {
+      socket.current.close();
+    }
+    
+  }, []);*/
 
   const handleSearch = e => {
     e.preventDefault();
@@ -48,22 +58,31 @@ function CreateChat({isModalOpen, setIsModalOpen}) {
 
   const createChat = () => {
     if(addList.length > 0) {
+      const accessIds = addList.map((user) => user._id );
       axios.post('/chat/create', {
-        accessList: addList,
+        accessList: accessIds,
       },{
         headers: {
           authorization: `Bearer ${objectUser.token}`
         },
       })
-      .then(res => {
+      .then(res => {   
+        const param = res.data;
+        socketRooms.current?.emit('newChat', {
+          accessList: addList,
+          creatorInfo: { 
+            _id: objectUser.id, 
+            username: objectUser.username, 
+          },
+          _id: param,
+        });
         setSearch('');
         setResult([]);
         setAddList([]);
-        const param = res.data;
-        history.push(`/chat/${param}`);
         setIsModalOpen(false);
+        history.push(`/chat/${param}`);
       })
-      .catch(error => alert(error.message))
+      .catch(error => alert(error))
     }
   }
 
@@ -100,8 +119,8 @@ function CreateChat({isModalOpen, setIsModalOpen}) {
                         <div className="createchat__result" key={item._id}>
                           <PersonIcon/>
                           <h3>{item.username}</h3>
-                          <IconButton>
-                            <AddCircleIcon onClick={() => addToList(item)}/>
+                          <IconButton onClick={() => addToList(item)}>
+                            <AddCircleIcon />
                           </IconButton>
                         </div>
                       )
@@ -117,8 +136,8 @@ function CreateChat({isModalOpen, setIsModalOpen}) {
                         <div className="createchat__result" key={item._id}>
                           <PersonIcon/>
                           <h3>{item.username}</h3>
-                          <IconButton>
-                            <RemoveCircleIcon onClick={() => removeOfList(item)}/>
+                          <IconButton onClick={() => removeOfList(item)}>
+                            <RemoveCircleIcon />
                           </IconButton>
                         </div>
                       )
