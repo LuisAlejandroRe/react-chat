@@ -10,7 +10,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import axios from '../../axios';
 
-function CreateChat({isModalOpen, setIsModalOpen, socketRooms}) {
+function CreateChat({isModalOpen, setIsModalOpen, socketRooms, setIsChatOpen}) {
 
   const history = useHistory();
   const [{ user }] = useStateValue();
@@ -18,16 +18,6 @@ function CreateChat({isModalOpen, setIsModalOpen, socketRooms}) {
   const [search, setSearch] = useState('');
   const [result, setResult] = useState([]);
   const [addList, setAddList] = useState([]);
-  //const socket = useRef();
-
-  /*useEffect(() => {
-    socket.current = io("ws://localhost:8000");
-  
-    return () => {
-      socket.current.close();
-    }
-    
-  }, []);*/
 
   const handleSearch = e => {
     e.preventDefault();
@@ -79,6 +69,7 @@ function CreateChat({isModalOpen, setIsModalOpen, socketRooms}) {
         setSearch('');
         setResult([]);
         setAddList([]);
+        setIsChatOpen(true);
         setIsModalOpen(false);
         history.push(`/chat/${param}`);
       })

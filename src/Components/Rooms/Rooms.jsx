@@ -15,6 +15,7 @@ function Rooms() {
   const objectUser = JSON.parse(user);
   const [chat, setChat] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const params = useParams();
   const socket = useRef();
 
@@ -49,13 +50,18 @@ function Rooms() {
   }, [])
 
   return(
-    <div className="rooms" >
+    <div className={isChatOpen ? "rooms  rooms__chat" : "rooms"}>
 
-      <CreateChat isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} socketRooms={socket}/>
+      <CreateChat 
+        isModalOpen={isModalOpen} 
+        setIsModalOpen={setIsModalOpen} 
+        socketRooms={socket} 
+        setIsChatOpen={setIsChatOpen}
+      />
       
-      <div className="rooms__container">
+      <div className={isChatOpen ? "rooms__container  rooms__containerChat" : "rooms__container"}>
 
-        <div className="sidebar">
+        <div className={isChatOpen ? "sidebar  sidebar__chat" : "sidebar"}>
 
           <div className="sidebar__header">
             <PersonIcon />
@@ -71,7 +77,7 @@ function Rooms() {
             {chat && 
               chat.map((i) => {
                 return (
-                  <Link to={`/chat/${i._id}`}>
+                  <Link to={`/chat/${i._id}`} onClick={() => setIsChatOpen(true)}>
                     <div className="sidebar__chatsItem" key={i._id}>
                       {i.accessList.map((name) => {
                         if(name._id !== objectUser.id) return (<p>{name.username}</p>)
@@ -87,7 +93,7 @@ function Rooms() {
 
         {params.id
         ?
-        <Chat />
+        <Chat isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen}/>
         :
         <div className="rooms__noChat">
           <div className="rooms__logoContainer">

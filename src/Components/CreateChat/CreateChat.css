@@ -167,3 +167,22 @@
 .createchat__result button .MuiSvgIcon-root {
   color: rgb(138, 94, 24);
 }
+
+.createchat__result h3 {
+  overflow: scroll;
+}
+
+.createchat__result h3::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .createchat__search {
+    width: 95%;
+    padding: 20px 5px;
+  }
+
+  .createsearch__lists > div {
+    padding: 10px 5px;
+  }
+}

@@ -9,7 +9,7 @@ import SendIcon from '@material-ui/icons/Send';
 import axios from '../../axios';
 import { io } from 'socket.io-client';
 
-function Chat() {
+function Chat({ isChatOpen, setIsChatOpen}) {
   const [{ user }] = useStateValue();
   const objectUser = JSON.parse(user);
   const [chat, setChat] = useState(null);
@@ -120,10 +120,10 @@ function Chat() {
   }
 
   return(
-    <div className="chat">
+    <div className={isChatOpen ? "chat" : "chat chat__close"}>
       <div className="chat__header">
         
-        <Link to='/rooms'>
+        <Link to='/rooms' onClick={() => setIsChatOpen(false)}>
           <IconButton>
             <ArrowBackIosIcon />
           </IconButton>

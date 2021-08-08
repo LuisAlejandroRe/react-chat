@@ -19,7 +19,7 @@
 }
 
 .sidebar {
-  flex: 0.35;
+  width: 35%;
   border-right: 2px solid rgba(255, 255, 255, 0.4);
 }
 
@@ -79,6 +79,7 @@
   padding: 10px 40px;
   height: calc(100% - 130px);
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .sidebar__chats::-webkit-scrollbar {
@@ -107,6 +108,11 @@
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   border: 2px solid rgba(255, 255, 255, 0.4);
+  overflow: scroll;
+}
+
+.sidebar__chatsItem::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebar__chatsItem:hover {
@@ -115,7 +121,7 @@
 }
 
 .rooms__noChat {
-  flex: 0.65;
+  width: 65%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,4 +169,36 @@
 
 .rooms__noChat span {
   font-size: 25px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .rooms {
+    justify-content: flex-end;
+  }
+
+  .rooms__chat {
+    justify-content: flex-start;
+  }
+
+  .rooms__container {
+    width: 95%;
+    border-radius: 100% 0% 0% 4% / 4% 0% 0% 19%;
+    transition: all ease-in-out 0.6s;
+  }
+
+  .rooms__containerChat {
+    border-radius: 0% 100% 15% 0% / 0% 4% 5% 0%;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .sidebar__chat {
+    display: none;
+  }
+
+  .rooms__noChat {
+    display: none;
+  }
 }
