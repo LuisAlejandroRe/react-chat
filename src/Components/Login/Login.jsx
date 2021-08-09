@@ -142,7 +142,7 @@ function Login() {
 
       <div className="login__footer">
         <span>Made by Luis Alejandro Realpe</span>
-        <a href="https://github.com/LuisAlejandroRe/hardware-shop" target='blank'>
+        <a href="https://github.com/LuisAlejandroRe/react-chat" target='blank'>
           <img src={githubLogo} height='20'/>
           Repository
         </a>
