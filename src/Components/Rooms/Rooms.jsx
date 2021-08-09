@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useStateValue } from '../../StateProvider';
 import './Rooms.css';
+import Div100vh from '../Div100vh/Div100vh';
 import CreateChat from '../CreateChat/CreateChat';
 import PersonIcon from '@material-ui/icons/Person';
 import TelegramIcon from '@material-ui/icons/Telegram';
@@ -37,7 +38,7 @@ function Rooms() {
     })
     .catch(error => alert(error.message))
     
-    socket.current = io("ws://localhost:8000");
+    socket.current = io("https://reactchat-api.herokuapp.com/");
     socket.current?.emit('logged', { user_id: objectUser.id });
     socket.current?.on('getChats', (chat) => {
       mounted && setChat((prev) => [...prev, chat])
@@ -49,8 +50,12 @@ function Rooms() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!params.id) (setIsChatOpen(false))
+  }, [params])
+
   return(
-    <div className={isChatOpen ? "rooms  rooms__chat" : "rooms"}>
+    <Div100vh className={isChatOpen ? "rooms  rooms__chat" : "rooms"}>
 
       <CreateChat 
         isModalOpen={isModalOpen} 
@@ -105,7 +110,7 @@ function Rooms() {
         }       
 
       </div>
-    </div>
+    </Div100vh>
   )
 }
 

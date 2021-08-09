@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
+import Div100vh from "../Div100vh/Div100vh";
 import axios from '../../axios';
 import './Login.css';
 import TelegramIcon from '@material-ui/icons/Telegram';
 import PersonIcon from '@material-ui/icons/Person';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import githubLogo from '../../Media/github-logo.png';
+import Loading from "../Loading/Loading";
 
 function Login() {
 
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState(null);
   const [{}, dispatch] = useStateValue();
 
@@ -33,6 +36,7 @@ function Login() {
     if(password.length < 8) (setErrMessage('Password must have at least 8 characters'))
 
     if(username.length > 0 && password.length >= 8 && password.length < 40) {
+      setIsLoading(true);
       axios.post('/user/login', {
         username: username,
         password: password,
@@ -44,12 +48,17 @@ function Login() {
             type: "SET_USER",
             user: JSON.stringify(authUser),
           });
+          setIsLoading(false);
           history.push('/rooms');
         } else {
+          setIsLoading(false);
           setErrMessage(res.data);
         }  
       })
-      .catch(error => alert(error.message));
+      .catch(error => {
+        alert(error.message);
+        setIsLoading(false);
+      });
     }
     
   }
@@ -62,6 +71,7 @@ function Login() {
     if(password.length < 8) (setErrMessage('Password must have at least 8 characters'))
 
     if(username.length > 0 && password.length >= 8 && password.length < 40) {
+      setIsLoading(true);
       axios.post('/user/register', {
         username: username,
         password: password,
@@ -73,18 +83,27 @@ function Login() {
             type: "SET_USER",
             user: JSON.stringify(authUser),
           });
+          setIsLoading(false);
           history.push('/rooms');
         } else {
+          setIsLoading(false);
           setErrMessage(res.data);
         }  
       })
-      .catch(error => alert(error.message));
+      .catch(error => {
+        alert(error.message);
+        setIsLoading(false);
+      });
     }
 
   }
 
   return (
-    <div className="login">
+    <Div100vh className="login">
+
+      {isLoading &&
+        <Loading />
+      }   
 
       <div className="login__body">
         <div className="login__logoContainer">
@@ -129,7 +148,7 @@ function Login() {
         </a>
       </div>
  
-    </div>
+    </Div100vh>
   )
 }
 

@@ -21,7 +21,7 @@ function Chat({ isChatOpen, setIsChatOpen}) {
   useEffect(() => {
     if(params.id) {
       let mounted = true;
-      socket.current = io("ws://localhost:8000");
+      socket.current = io("https://reactchat-api.herokuapp.com/");
       socket.current?.emit('joinRoom', { chatId: params.id });
       socket.current?.on('getMessage', (msg) => {
           mounted && setMessages((prev) => [...prev, msg])
