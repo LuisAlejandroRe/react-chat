@@ -36,7 +36,7 @@ function Rooms() {
     .then(res => {
       mounted && setChat(res.data);
     })
-    .catch(error => alert(error.message))
+    .catch(error => console.error(error.message));
     
     socket.current = io("https://reactchat-api.herokuapp.com/");
     socket.current?.emit('logged', { user_id: objectUser.id });
@@ -51,6 +51,7 @@ function Rooms() {
   }, [])
 
   useEffect(() => {
+    if (params.id) (setIsChatOpen(true))
     if (!params.id) (setIsChatOpen(false))
   }, [params])
 

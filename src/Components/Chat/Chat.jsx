@@ -45,7 +45,7 @@ function Chat({ isChatOpen, setIsChatOpen}) {
       .then((res) => {
         mounted && setChat(res.data);
       })
-      .catch(error => alert(error.message));
+      .catch(error => console.error(error.message));
 
       return () => {
         mounted = false;
@@ -66,7 +66,7 @@ function Chat({ isChatOpen, setIsChatOpen}) {
       .then((res) => {
         mounted && setMessages(res.data);
       })
-      .catch(error => alert(error.message));
+      .catch(error => console.error(error.message));
 
       return () => {
         mounted = false;
@@ -107,7 +107,7 @@ function Chat({ isChatOpen, setIsChatOpen}) {
         },
       })
       .then()
-      .catch(error => alert(error.message))
+      .catch(error => console.error(error.message))
       
       setInput('');
     }  
